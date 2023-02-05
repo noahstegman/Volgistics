@@ -54,6 +54,16 @@ export const useCalendarStore = defineStore({
         },
         getDayNum(state) {
             return new Date(parseInt(state.year), parseInt(state.month), 0).getDay();
-        }
+        },
+        totalPrevDays(state) {
+            let temp = state.month;
+            if(temp == 1){
+                temp = 12;
+                return new Date(parseInt(state.year), parseInt(temp), 0).getDate();
+            }else{
+                temp = temp - 1;
+                return new Date(parseInt(state.year), parseInt(temp), 0).getDate();
+            }
+        },
     }
 })

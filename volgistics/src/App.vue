@@ -31,6 +31,7 @@ const storeCalendar = useCalendarStore();
     <div class="month">
       <div class="day" v-for="n in parseInt(storeCalendar.getDayNum + 1)" :key='n'>
         <div> {{ storeCalendar.getDayAbs(n - 1) }}</div>
+        <div> {{ storeCalendar.totalPrevDays }}</div>
       </div>
       <div class="day" v-for="n in parseInt(storeCalendar.totalDays)" :key="n">
         <div>{{ n }}</div>

@@ -1,4 +1,5 @@
 <script setup>
+import { stringifyExpression } from '@vue/compiler-core';
 import { RouterLink, RouterView } from 'vue-router'
 import { useCalendarStore } from '../src/stores/calendar'
 
@@ -27,11 +28,12 @@ const storeCalendar = useCalendarStore();
         <option value="12">December</option>
       </select>
 <!--       <button @click="storeCalendar.getDays">Submit</button> -->
+      <button @click="storeCalendar.backwardsDays">Test</button>
     </div>
     <div class="month">
-      <div class="day" v-for="n in parseInt(storeCalendar.getDayNum + 1)" :key='n'>
+      <div class="day day-backwayds" v-for="n in parseInt(storeCalendar.getDayNum + 1)" :key='n'>
+        <div> {{ storeCalendar.backwardsDays((n - 1)*-1) }}</div>
         <div> {{ storeCalendar.getDayAbs(n - 1) }}</div>
-        <div> {{ storeCalendar.totalPrevDays }}</div>
       </div>
       <div class="day" v-for="n in parseInt(storeCalendar.totalDays)" :key="n">
         <div>{{ n }}</div>
@@ -82,4 +84,5 @@ const storeCalendar = useCalendarStore();
     align-items: center;
     justify-content: center;
   }
+
 </style>

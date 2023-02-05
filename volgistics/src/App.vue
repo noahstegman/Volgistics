@@ -29,6 +29,9 @@ const storeCalendar = useCalendarStore();
 <!--       <button @click="storeCalendar.getDays">Submit</button> -->
     </div>
     <div class="month">
+      <div class="day" v-for="n in parseInt(storeCalendar.getDayNum + 1)" :key='n'>
+        <div> {{ storeCalendar.getDayAbs(n - 1) }}</div>
+      </div>
       <div class="day" v-for="n in parseInt(storeCalendar.totalDays)" :key="n">
         <div>{{ n }}</div>
         <div>{{ storeCalendar.getDay(n) }}</div>
@@ -58,6 +61,7 @@ const storeCalendar = useCalendarStore();
   .month{
     display: flex;
     flex-direction: row;
+    justify-content: center;
     flex-wrap: wrap;
   }
 
@@ -65,7 +69,7 @@ const storeCalendar = useCalendarStore();
     margin: 15px;
     background-color: rgb(185, 185, 247);
     height: 150px;
-    width: 150px;
+    width: 225px;
     border-radius: 10px;
     display: flex;
     align-items: center;

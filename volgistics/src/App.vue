@@ -39,6 +39,10 @@ const storeCalendar = useCalendarStore();
         <div>{{ n }}</div>
         <div>{{ storeCalendar.getDay(n) }}</div>
       </div>
+      <div class="day" v-for="n in parseInt(7 - storeCalendar.getDayNum)" :key='n'>
+        <div> {{ n }} </div>
+        <div> {{ storeCalendar.getDayAbs(n + 2)}}</div>
+    </div>
     </div>
   </div>
 </div>

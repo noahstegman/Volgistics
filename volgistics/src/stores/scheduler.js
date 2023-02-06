@@ -9,24 +9,14 @@ export const createScheduleStore = defineStore({
         booking: [],
         name: "",
         startdate: "2022-01-01",
-        hideInput: false,
+        showInput: false,
+        selectedDay: "",
+        selectedMonth: "",
+        selectedYear: "",
+        name: "",
+        message: ""
     }),
     actions: {
-        setSchedule(d) {
-            let count = 0
-            this.booking.forEach((b) => {
-                if(b['date'] == d){
-                    count++
-                }
-            })
-            if(count > 2){
-                alert("3 Volunteers max!")
-            } else{
-                this.day = {name: this.name, date: this.date, id: this.id}
-                this.booking = [this.day, ...this.booking]
-                this.id++
-            } 
-        },
         totalBookings(d) {
             let count = 0
             this.booking.forEach((b) => {
@@ -36,10 +26,53 @@ export const createScheduleStore = defineStore({
             })
             console.log(count)
         },
-        addEntry(n, m, y){
-            let entry = {day: n, month: m, year: y, name: "Noah", id: this.id}
-            this.booking = [entry, ...this.booking]
-            this.id++
+        overlay(n, m, y){
+            this.selectedDay = n
+            this.selectedMonth = m
+            this.selectedYear = y
+            this.showInput = true
+        },
+        execute(){
+            let count = 0
+            this.booking.forEach(item => {
+                if(this.selectedDay !== item['day']){
+                    return
+                } 
+                if(this.selectedMonth !== item['month']){
+                    return
+                }
+                if(this.selectedYear !== item['year']){
+                    return
+                } else{
+                    count++
+                }
+            });
+            if(count > 2){
+                alert("3 Volunteers max!")
+                this.showInput = false
+            } else{
+                let entry = {day: this.selectedDay, month: this.selectedMonth, year: this.selectedYear, name: this.name, message: this.message, id: this.id}
+                this.booking = [entry, ...this.booking]
+                this.id++
+                this.showInput = false
+            }
+        },
+        getEvents(n, m, y){
+            let this_day = []
+            this.booking.forEach(item => {
+                if(n !== item['day']){
+                    return
+                } 
+                if(m !== item['month']){
+                    return
+                }
+                if(y !== item['year']){
+                    return
+                } else{
+                    this_day = [item, ...this_day]
+                }
+            });
+            return this_day
         }
     },
     getters: {
@@ -50,43 +83,18 @@ export const createScheduleStore = defineStore({
         },
         getMonth(state){
             let m = new Date(state.date);
-            m = new Date( m.getTime() - m.getTimezoneOffset() * -60000 ).getMonth()
-            switch (m){
-                case 0:
-                    return "January";
-                case 1:
-                    return "February";
-                case 2:
-                    return "March";
-                case 3:
-                    return "April";
-                case 4:
-                    return "May";
-                case 5:
-                    return "June";
-                case 6:
-                    return "July";
-                case 7:
-                    return "August";
-                case 8:
-                    return "September";
-                case 9:
-                    return "October";
-                case 10:
-                    return "November";
-                case 11:
-                    return "December";
-            }
+            return new Date( m.getTime() - m.getTimezoneOffset() * -60000 ).getMonth() + 1
+
         },
-    getYear(state){
-        let m = new Date(state.date);
-        return new Date( m.getTime() - m.getTimezoneOffset() * -60000 ).getFullYear()
-    },
-    getDay(state){
-        let m = new Date(state.date).getMonth()
-        let y = new Date(state.date).getFullYear()
-        return new Date(y, m, 1).getDay()
-    }
+        getYear(state){
+            let m = new Date(state.date);
+            return new Date( m.getTime() - m.getTimezoneOffset() * -60000 ).getFullYear()
+        },
+        getDay(state){
+            let m = new Date(state.date).getMonth()
+            let y = new Date(state.date).getFullYear()
+            return new Date(y, m, 1).getDay()
+        }
     }
 })
 

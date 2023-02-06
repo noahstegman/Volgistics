@@ -5,10 +5,11 @@ export const createScheduleStore = defineStore({
     state: () => ({
         id: 0,
         day: {},
-        date: "2022-01-01",
+        date: "2023-02-05",
         booking: [],
         name: "",
-        hideInput: false
+        startdate: "2022-01-01",
+        hideInput: false,
     }),
     actions: {
         setSchedule(d) {
@@ -35,18 +36,57 @@ export const createScheduleStore = defineStore({
             })
             console.log(count)
         },
-        execute() {
-            if (this.hideInput == true){
-                this.hideInput = false
-            }else{
-                this.hideInput = true
-            }
+        addEntry(n, m, y){
+            let entry = {day: n, month: m, year: y, name: "Noah", id: this.id}
+            this.booking = [entry, ...this.booking]
+            this.id++
         }
     },
     getters: {
-        dateConvert(state) {
-            let d = new Date(state.date);
-            return d.toISOString().substring(0, 10);
-        }
+        getTotalDays(state){
+            let m = new Date(state.date).getMonth() + 1
+            let y = new Date(state.date).getFullYear()
+            return new Date(y, m, 0).getDate()
+        },
+        getMonth(state){
+            let m = new Date(state.date);
+            m = new Date( m.getTime() - m.getTimezoneOffset() * -60000 ).getMonth()
+            switch (m){
+                case 0:
+                    return "January";
+                case 1:
+                    return "February";
+                case 2:
+                    return "March";
+                case 3:
+                    return "April";
+                case 4:
+                    return "May";
+                case 5:
+                    return "June";
+                case 6:
+                    return "July";
+                case 7:
+                    return "August";
+                case 8:
+                    return "September";
+                case 9:
+                    return "October";
+                case 10:
+                    return "November";
+                case 11:
+                    return "December";
+            }
+        },
+    getYear(state){
+        let m = new Date(state.date);
+        return new Date( m.getTime() - m.getTimezoneOffset() * -60000 ).getFullYear()
+    },
+    getDay(state){
+        let m = new Date(state.date).getMonth()
+        let y = new Date(state.date).getFullYear()
+        return new Date(y, m, 1).getDay()
+    }
     }
 })
+

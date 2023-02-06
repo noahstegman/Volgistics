@@ -4,6 +4,14 @@ import { createScheduleStore } from '../stores/scheduler'
 
 const StoreSchedule = createScheduleStore();
 
+let lol = new Date();
+
+console.log( new Date( lol.getTime() - lol.getTimezoneOffset() * -60000 ));
+
+/* console.log(lol.getDay())
+console.log(lol.getDate() - parseInt(lol.getDay()))
+console.log(lol.getDate() + (7 - lol.getDay())) */
+
 </script>
 
 <template>
@@ -13,22 +21,25 @@ const StoreSchedule = createScheduleStore();
   <div class="wrapper">
     <div class="data-input">
       <div><input type="text" placeholder="Enter Name" v-model="StoreSchedule.name"/></div>
-      <div></div>
+      <div><input type="date" v-model="StoreSchedule.date"></div>
       <div><button @click="StoreSchedule.setSchedule(StoreSchedule.date)">Submit</button></div>
     </div>
     <div class="output">
-      <div>
-        <v-date-picker v-model="StoreSchedule.date" @dayclick="StoreSchedule.execute()"/>
+      <div class="blank" v-for="n in StoreSchedule.getDay"></div>
+      <div class="day" v-for="n in StoreSchedule.getTotalDays" @click="StoreSchedule.addEntry(n, StoreSchedule.getMonth, StoreSchedule.getYear)">
+        <div>{{ n }}</div>
+        <div>{{ StoreSchedule.getMonth }}</div>
       </div>
-        {{ StoreSchedule.dateConvert }}
+      <div>{{ StoreSchedule.booking }}</div>
     </div>
+
   </div>
 </template>
 
 <style scoped>
 .data-selector{
   position: fixed;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.2);
   z-index: 200;
@@ -44,6 +55,13 @@ const StoreSchedule = createScheduleStore();
     padding: 25px;
   }
 
+  .day{
+    width: 220px;
+    margin: 15px;
+    height: 200px;
+    background-color: green;
+  }
+
   input{
     width: 200px;
     height: 20px;
@@ -53,8 +71,14 @@ const StoreSchedule = createScheduleStore();
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
+  }
+
+  .blank{
+    width: 220px;
+    margin: 15px;
+    height: 200px;
   }
 
   .exit{
@@ -71,7 +95,13 @@ const StoreSchedule = createScheduleStore();
     margin-top: 30px;
     background-color: rgba(0, 0, 0, 0.2);
     width: 95vw;
-    height: 90vh;
+    min-height: 90vh;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
   }
 
 </style>

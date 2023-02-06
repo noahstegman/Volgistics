@@ -7,7 +7,8 @@ export const createScheduleStore = defineStore({
         day: {},
         date: "2022-01-01",
         booking: [],
-        name: ""
+        name: "",
+        hideInput: false
     }),
     actions: {
         setSchedule(d) {
@@ -33,6 +34,19 @@ export const createScheduleStore = defineStore({
                 }
             })
             console.log(count)
+        },
+        execute() {
+            if (this.hideInput == true){
+                this.hideInput = false
+            }else{
+                this.hideInput = true
+            }
+        }
+    },
+    getters: {
+        dateConvert(state) {
+            let d = new Date(state.date);
+            return d.toISOString().substring(0, 10);
         }
     }
 })

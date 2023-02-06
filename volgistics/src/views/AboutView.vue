@@ -15,22 +15,27 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 </script>
 
 <template>
-  <div class="data-selector" v-show="StoreSchedule.hideInput">
-    <div class="exit" @click="StoreSchedule.execute">X</div>
+  <div class="data-selector" v-show="StoreSchedule.showInput">
+    <div class="exit" @click="StoreSchedule.showInput = false">X</div>
+    <div>
+      <input type="text" placeholder="your name" v-model="StoreSchedule.name"/>
+      <input type="text" placeholder="message" v-model="StoreSchedule.message">
+      <button @click="StoreSchedule.execute()">submit</button>
+    </div>
   </div>
   <div class="wrapper">
     <div class="data-input">
-      <div><input type="text" placeholder="Enter Name" v-model="StoreSchedule.name"/></div>
       <div><input type="date" v-model="StoreSchedule.date"></div>
-      <div><button @click="StoreSchedule.setSchedule(StoreSchedule.date)">Submit</button></div>
     </div>
     <div class="output">
       <div class="blank" v-for="n in StoreSchedule.getDay"></div>
-      <div class="day" v-for="n in StoreSchedule.getTotalDays" @click="StoreSchedule.addEntry(n, StoreSchedule.getMonth, StoreSchedule.getYear)">
+      <div class="day" v-for="n in StoreSchedule.getTotalDays" @click="StoreSchedule.overlay(n, StoreSchedule.getMonth, StoreSchedule.getYear)">
         <div>{{ n }}</div>
-        <div>{{ StoreSchedule.getMonth }}</div>
+        <div v-for="event in StoreSchedule.getEvents(n, StoreSchedule.getMonth, StoreSchedule.getYear)">
+          <div>{{ event['name'] }}</div>
+          <div>{{ event['message'] }}</div>
+        </div>
       </div>
-      <div>{{ StoreSchedule.booking }}</div>
     </div>
 
   </div>
@@ -56,7 +61,7 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
   }
 
   .day{
-    width: 220px;
+    width: 12vw;
     margin: 15px;
     height: 200px;
     background-color: green;
@@ -76,7 +81,7 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
   }
 
   .blank{
-    width: 220px;
+    width: 12vw;
     margin: 15px;
     height: 200px;
   }

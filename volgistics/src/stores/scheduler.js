@@ -13,6 +13,7 @@ export const createScheduleStore = defineStore({
         selectedDay: "",
         selectedMonth: "",
         selectedYear: "",
+        timeslot: "morning",
         name: "",
         message: ""
     }),

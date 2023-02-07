@@ -18,10 +18,28 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 
   <div class="data-selector" v-show="StoreSchedule.showInput">
     <div class="exit" @click="StoreSchedule.showInput = false">X</div>
-    <div>
-      <input type="text" placeholder="your name" v-model="StoreSchedule.name"/>
-      <input type="text" placeholder="message" v-model="StoreSchedule.message">
-      <button @click="StoreSchedule.execute()">submit</button>
+    <div class="ds-wrap">
+      <div class="ds-form"><input type="text" placeholder="your name" v-model="StoreSchedule.name"/></div>
+      <div class="ds-form"><input type="text" placeholder="message" v-model="StoreSchedule.message"/></div>
+      <div class="ds-form">
+        <select id="timeslot" v-model="StoreSchedule.timeslot">
+          <option value="morning">Morning</option>
+          <option value="afternoon" selected>Afternoon</option>
+          <option value="evening">Evening</option>
+        </select>
+      </div>
+      <div class="ds-form"><button @click="StoreSchedule.execute()">submit</button></div>
+    </div>
+    <div class="sch-wrap">
+      <div class="sch-morning">
+        <div>Morning</div>
+      </div>
+      <div class="sch-afternoon">
+        <div>Afternoon</div>
+      </div>
+      <div class="sch-night">
+        <div>Evening</div>
+      </div>
     </div>
   </div>
   <div class="wrapper">
@@ -34,6 +52,13 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
       <div class="btn" @click="StoreSchedule.nextMonth()">Next Month</div>
     </div>
     <div class="output">
+      <div class="weekday">Sunday</div>
+      <div class="weekday">Monday</div>
+      <div class="weekday">Tuesday</div>
+      <div class="weekday">Wednesday</div>
+      <div class="weekday">Thursday</div>
+      <div class="weekday">Friday</div>
+      <div class="weekday">Saturday</div>
       <div class="blank" v-for="n in StoreSchedule.getDay"></div>
       <div class="day" v-for="n in StoreSchedule.getTotalDays" @click="StoreSchedule.overlay(n, StoreSchedule.getMonth, StoreSchedule.getYear)">
         <div class="date">{{ n }}</div>
@@ -51,20 +76,82 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300&family=Open+Sans:wght@300&display=swap');
 
+.sch-wrap > div{
+  height: 25vh;
+  width: 60%;
+  margin: 1vh;
+}
+.sch-morning{
+  background-color: cadetblue;
+}
+.sch-afternoon{
+  background-color: darksalmon;
+}
+.sch-night{
+  background-color: mediumpurple;
+}
+.sch-wrap{
+  height: 70vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.ds-wrap{
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: 200px;
+  justify-content: space-evenly;
+}
+
+.ds-form > input, button, select{
+  text-align: center;
+  height: 40px;
+  box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  width:  100%;
+  margin: 0;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid black;
+  color: #222;
+  font-size: 25px;
+  padding: 0;
+  transition: .05s all linear;
+}
+
+.ds-form > button:hover{
+  background-color: rgb(200, 200, 200);
+  cursor: pointer;
+  transition: .05s all linear;
+  transform: scale(1.01);
+}
 
 .data-selector{
+  display: flex;
   position: fixed;
   min-height: 100vh;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   z-index: 200;
 }
 
 .date{
-  padding: 5px;
+  margin: 3px;
+  padding: 1px;
+  border-radius: 100px;
+  width: 25px;
+  height: 25px;
   font-size: 22px;
   font-family: 'Open Sans', sans-serif;
-  border-bottom: 1px solid black;
   text-align: center;
 }
 
@@ -115,13 +202,33 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
     text-align: center;
   }
 
+  .weekday{
+    width: 12vw;
+    font-size: 30px;
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 100;
+    text-transform: uppercase;
+    height: 40px;
+    margin: 15px;
+    border-bottom: 1px solid black;
+  }
+
 
   .day{
     width: 12vw;
     margin: 15px;
     border-radius: 20px;
     height: 200px;
-    background-color: rgb(103, 192, 103);
+    transition: all .1s linear;
+    background-color: rgba(145, 170, 170, 0.787);
+  }
+
+  .day:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+    background-color: rgba(98, 120, 120, 0.875);
+    transition: all .1s linear;
   }
 
   input{
@@ -145,17 +252,34 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 
   .exit{
     position: absolute;
-    right: 25px;
-    top: 25px;
+    right: 100px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 100;
+    top: 40px;
+    width: 70px;
+    text-align: center;
+    line-height: 70px;
+    border: 3px solid black;
+    border-radius: 70px;
+    height: 70px;
+    background-color: white;
+    padding: 20px;
+    transition: all .05s linear;
     font-size: 70px;
+  }
+
+  .exit:hover{
+    background-color: #9f9f99;
+    transition: all .05s linear;
   }
   .exit:hover{
     cursor: pointer;
   }
 
   .output{
-    background-color: rgba(17, 150, 211, 0.355);
     width: 95vw;
+    border: 1px solid black;
+    border-radius: 10px;
     min-height: 90vh;
     display: flex;
     flex-wrap: wrap;

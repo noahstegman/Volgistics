@@ -13,7 +13,7 @@ const StoreSchedule = createScheduleStore();
     <div class="exit" @click="StoreSchedule.showInput = false">X</div>
     <div class="ds-wrap">
       <div class="ds-inputs">
-        <div class="ds-form"><input type="text" placeholder="your name" v-model="StoreSchedule.name"/></div>
+        <div class="ds-form" v-bind:class="StoreSchedule.submit_error"><input type="text" placeholder="your name" v-model="StoreSchedule.name"/></div>
         <div class="ds-form"><input type="time" v-model="StoreSchedule.timein"/></div>
         <div class="ds-form">
           <select id="timeslot" v-model="StoreSchedule.timeslot">
@@ -25,7 +25,7 @@ const StoreSchedule = createScheduleStore();
         
       </div>
       <div class="ds-inputs">
-        <div class="ds-form"><input type="text" placeholder="message" v-model="StoreSchedule.message"/></div>
+        <div class="ds-form" v-bind:class="StoreSchedule.text_error"><input type="text" placeholder="message" v-model="StoreSchedule.message"/></div>
         <div class="ds-form"><input type="time" v-model="StoreSchedule.timeout"/></div>
         <div class="ds-form"><button @click="StoreSchedule.execute()">submit</button></div>
     </div>
@@ -109,6 +109,10 @@ const StoreSchedule = createScheduleStore();
 
 .three{
   background-color: rgba(0, 128, 0, 0.438);
+}
+
+.error, .text_error{
+  border: 3px solid red;
 }
 
  .txt-time{

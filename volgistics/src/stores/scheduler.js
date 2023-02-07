@@ -17,7 +17,9 @@ export const createScheduleStore = defineStore({
         name: "",
         message: "",
         timein: "12:00",
-        timeout: "13:00"
+        timeout: "13:00",
+        submit_error: "",
+        text_error: ""
     }),
     actions: {
         totalBookings(d) {
@@ -36,6 +38,8 @@ export const createScheduleStore = defineStore({
             this.showInput = true
         },
         execute(){
+            this.submit_error = ""
+            this.text_error = ""
             let count = 0
             this.booking.forEach(item => {
                 if(this.selectedDay !== item['day']){
@@ -56,7 +60,12 @@ export const createScheduleStore = defineStore({
             if(count > 2){
                 alert("3 Volunteers max!")
                 this.showInput = false
-            } else{
+            }else if(!this.name){
+                this.submit_error = "error"
+            }else if(!this.message){
+                this.text_error = "text_error"
+            }
+            else{
                 let entry = {day: this.selectedDay, month: this.selectedMonth, year: this.selectedYear, name: this.name, message: this.message, id: this.id, timeslot: this.timeslot, timein: this.timein, timeout: this.timeout}
                 this.booking = [entry, ...this.booking]
                 this.id++

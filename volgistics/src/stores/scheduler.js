@@ -5,7 +5,7 @@ export const createScheduleStore = defineStore({
     state: () => ({
         id: 0,
         day: {},
-        date: "2023-02-05",
+        date: "2023-02-15",
         booking: [],
         name: "",
         startdate: "2022-01-01",
@@ -73,6 +73,16 @@ export const createScheduleStore = defineStore({
                 }
             });
             return this_day
+        },
+        prevMonth(){
+            let m = new Date(this.date)
+            m.setMonth(m.getMonth() - 1)
+            this.date = m.toISOString().split('T')[0]
+        },
+        nextMonth(){
+            let m = new Date(this.date)
+            m.setMonth(m.getMonth() + 1)
+            this.date = m.toISOString().split('T')[0]
         }
     },
     getters: {
@@ -84,7 +94,6 @@ export const createScheduleStore = defineStore({
         getMonth(state){
             let m = new Date(state.date);
             return new Date( m.getTime() - m.getTimezoneOffset() * -60000 ).getMonth() + 1
-
         },
         getYear(state){
             let m = new Date(state.date);
@@ -94,6 +103,36 @@ export const createScheduleStore = defineStore({
             let m = new Date(state.date).getMonth()
             let y = new Date(state.date).getFullYear()
             return new Date(y, m, 1).getDay()
+        },
+        getMonthName(state){
+            let m = new Date(state.date);
+            m = new Date( m.getTime() - m.getTimezoneOffset() * -60000 ).getMonth() + 1
+            switch (m) {
+                case 1: 
+                    return "January"
+                case 2:
+                    return "February"
+                case 3:
+                    return "March"
+                case 4:
+                    return "April"
+                case 5:
+                    return "May"
+                case 6:
+                    return "June"
+                case 7:
+                    return "July"
+                case 8:
+                    return "August"
+                case 9:
+                    return "September"
+                case 10:
+                    return "October"
+                case 11:
+                    return "November"
+                case 12:
+                    return "December"
+            }
         }
     }
 })

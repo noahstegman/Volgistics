@@ -4,13 +4,6 @@ import { createScheduleStore } from '../stores/scheduler'
 
 const StoreSchedule = createScheduleStore();
 
-let lol = new Date();
-
-console.log( new Date( lol.getTime() - lol.getTimezoneOffset() * -60000 ));
-
-/* console.log(lol.getDay())
-console.log(lol.getDate() - parseInt(lol.getDay()))
-console.log(lol.getDate() + (7 - lol.getDay())) */
 
 </script>
 
@@ -19,16 +12,23 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
   <div class="data-selector" v-show="StoreSchedule.showInput">
     <div class="exit" @click="StoreSchedule.showInput = false">X</div>
     <div class="ds-wrap">
-      <div class="ds-form"><input type="text" placeholder="your name" v-model="StoreSchedule.name"/></div>
-      <div class="ds-form"><input type="text" placeholder="message" v-model="StoreSchedule.message"/></div>
-      <div class="ds-form">
-        <select id="timeslot" v-model="StoreSchedule.timeslot">
-          <option value="morning">Morning</option>
-          <option value="afternoon" selected>Afternoon</option>
-          <option value="evening">Evening</option>
-        </select>
+      <div class="ds-inputs">
+        <div class="ds-form"><input type="text" placeholder="your name" v-model="StoreSchedule.name"/></div>
+        <div class="ds-form"><input type="time" v-model="StoreSchedule.timein"/></div>
+        <div class="ds-form">
+          <select id="timeslot" v-model="StoreSchedule.timeslot">
+            <option value="morning" selected>Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+          </select>
+        </div>
+        
       </div>
-      <div class="ds-form"><button @click="StoreSchedule.execute()">submit</button></div>
+      <div class="ds-inputs">
+        <div class="ds-form"><input type="text" placeholder="message" v-model="StoreSchedule.message"/></div>
+        <div class="ds-form"><input type="time" v-model="StoreSchedule.timeout"/></div>
+        <div class="ds-form"><button @click="StoreSchedule.execute()">submit</button></div>
+    </div>
     </div>
     <div class="sch-wrap">
       <div class="sch-morning">
@@ -37,6 +37,7 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
           <div class="sch-ev-cont" v-for="event in StoreSchedule.getEvents(StoreSchedule.selectedDay, StoreSchedule.getMonth, StoreSchedule.getYear, 'morning')">
             <div class="sch-name">{{ event['name'] }}</div>
             <div class="sch-msg">{{ event['message'] }}</div>
+            <div class="sch-msg"><span>{{ event['timein'] }}</span> - <span>{{ event['timeout'] }}</span></div>
           </div>
         </div>
       </div>
@@ -87,7 +88,6 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
         </div>
       </div>
     </div>
-    <div>{{ StoreSchedule.booking }}</div>
   </div>
 </template>
 
@@ -129,10 +129,19 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 }
 
 .sch-ev-cont{
-  width: calc(33.33% - 2px);
+  flex: 1;
   display: flex;
   flex-direction: column;
   height: 100%;
+  justify-content: space-evenly;
+}
+
+.ds-inputs{
+  display: flex;
+  margin: 20px;
+  flex-direction: column;
+  width: 350px;
+  height: 200px;
   justify-content: space-evenly;
 }
 
@@ -152,6 +161,8 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
   height: 80%;
   width: 100%;
 }
+
+
 
 .sch-msg{
   font-size: 18px;
@@ -176,15 +187,24 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 }
 .color-wrap{
   display: flex;
+  border-radius: 15px;
   flex-direction: column;
-  height: 90%;
+  height: 100%;
   width: 100%;
 }
 .color-wrap > div{
   text-align: center;
   font-family: 'Open Sans', sans-serif;
   font-weight: 1000;
-  height: 30%;
+  height: calc(100% / 3);
+}
+
+.color-wrap > div:first-child{
+  border-radius: 20px 20px 0 0;
+}
+
+.color-wrap > div:nth-child(3){
+  border-radius: 0 0 20px 20px;
 }
 
 .sch-wrap{
@@ -197,10 +217,13 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 }
 .ds-wrap{
   display: flex;
-  flex-direction: column;
-  width: 600px;
-  height: 200px;
-  justify-content: space-evenly;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 200px;
+  justify-content: center;
+  margin-right: 50px;
+  margin-left: 50px;
 }
 
 .ds-form > input, button, select{
@@ -242,7 +265,10 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 }
 
 .date{
-  margin: 3px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: 100;
   padding: 1px;
   border-radius: 100px;
   width: 25px;
@@ -301,20 +327,21 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 
   .weekday{
     width: 12vw;
-    font-size: 30px;
+    font-size: calc(2vw);
     text-align: center;
     font-family: 'Nunito', sans-serif;
     font-weight: 100;
     text-transform: uppercase;
     height: 40px;
-    margin: 15px;
+    margin: .75vw;
     border-bottom: 1px solid black;
   }
 
 
   .day{
     width: 12vw;
-    margin: 15px;
+    margin: .75vw;
+    position: relative;
     border-radius: 20px;
     height: 200px;
     transition: all .1s linear;
@@ -343,7 +370,7 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 
   .blank{
     width: 12vw;
-    margin: 15px;
+    margin: .75vw;
     height: 200px;
   }
 

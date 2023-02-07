@@ -13,9 +13,11 @@ export const createScheduleStore = defineStore({
         selectedDay: "",
         selectedMonth: "",
         selectedYear: "",
-        timeslot: "MORNING",
+        timeslot: "morning",
         name: "",
-        message: ""
+        message: "",
+        timein: "12:00",
+        timeout: "13:00"
     }),
     actions: {
         totalBookings(d) {
@@ -55,7 +57,7 @@ export const createScheduleStore = defineStore({
                 alert("3 Volunteers max!")
                 this.showInput = false
             } else{
-                let entry = {day: this.selectedDay, month: this.selectedMonth, year: this.selectedYear, name: this.name, message: this.message, id: this.id, timeslot: this.timeslot}
+                let entry = {day: this.selectedDay, month: this.selectedMonth, year: this.selectedYear, name: this.name, message: this.message, id: this.id, timeslot: this.timeslot, timein: this.timein, timeout: this.timeout}
                 this.booking = [entry, ...this.booking]
                 this.id++
                 this.name = ""

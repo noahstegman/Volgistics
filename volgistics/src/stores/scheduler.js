@@ -13,7 +13,7 @@ export const createScheduleStore = defineStore({
         selectedDay: "",
         selectedMonth: "",
         selectedYear: "",
-        timeslot: "morning",
+        timeslot: "MORNING",
         name: "",
         message: ""
     }),
@@ -42,6 +42,9 @@ export const createScheduleStore = defineStore({
                 if(this.selectedMonth !== item['month']){
                     return
                 }
+                if(this.timeslot !== item['timeslot']){
+                    return
+                }
                 if(this.selectedYear !== item['year']){
                     return
                 } else{
@@ -52,19 +55,22 @@ export const createScheduleStore = defineStore({
                 alert("3 Volunteers max!")
                 this.showInput = false
             } else{
-                let entry = {day: this.selectedDay, month: this.selectedMonth, year: this.selectedYear, name: this.name, message: this.message, id: this.id}
+                let entry = {day: this.selectedDay, month: this.selectedMonth, year: this.selectedYear, name: this.name, message: this.message, id: this.id, timeslot: this.timeslot}
                 this.booking = [entry, ...this.booking]
                 this.id++
                 this.showInput = false
             }
         },
-        getEvents(n, m, y){
+        getEvents(n, m, y, t){
             let this_day = []
             this.booking.forEach(item => {
                 if(n !== item['day']){
                     return
                 } 
                 if(m !== item['month']){
+                    return
+                }
+                if(t !== item['timeslot']){
                     return
                 }
                 if(y !== item['year']){

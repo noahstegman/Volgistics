@@ -32,13 +32,31 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
     </div>
     <div class="sch-wrap">
       <div class="sch-morning">
-        <div>Morning</div>
+        <div class="txt-time">Morning</div>
+        <div class="sch-ev-wr">
+          <div class="sch-ev-cont" v-for="event in StoreSchedule.getEvents(StoreSchedule.selectedDay, StoreSchedule.getMonth, StoreSchedule.getYear, 'morning')">
+            <div class="sch-name">{{ event['name'] }}</div>
+            <div class="sch-msg">{{ event['message'] }}</div>
+          </div>
+        </div>
       </div>
       <div class="sch-afternoon">
-        <div>Afternoon</div>
+        <div class="txt-time">Afternoon</div>
+        <div class="sch-ev-wr">
+          <div class="sch-ev-cont" v-for="event in StoreSchedule.getEvents(StoreSchedule.selectedDay, StoreSchedule.getMonth, StoreSchedule.getYear, 'afternoon')">
+            <div class="sch-name">{{ event['name'] }}</div>
+            <div class="sch-msg">{{ event['message'] }}</div>
+          </div>
+        </div>
       </div>
       <div class="sch-night">
-        <div>Evening</div>
+        <div class="txt-time">Evening</div>
+        <div class="sch-ev-wr">
+          <div class="sch-ev-cont" v-for="event in StoreSchedule.getEvents(StoreSchedule.selectedDay, StoreSchedule.getMonth, StoreSchedule.getYear, 'evening')">
+            <div class="sch-name">{{ event['name'] }}</div>
+            <div class="sch-msg">{{ event['message'] }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -62,19 +80,62 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
       <div class="blank" v-for="n in StoreSchedule.getDay"></div>
       <div class="day" v-for="n in StoreSchedule.getTotalDays" @click="StoreSchedule.overlay(n, StoreSchedule.getMonth, StoreSchedule.getYear)">
         <div class="date">{{ n }}</div>
-        <div v-for="event in StoreSchedule.getEvents(n, StoreSchedule.getMonth, StoreSchedule.getYear)">
-          <div>{{ event['name'] }}</div>
+        <div v-for="event in StoreSchedule.getEvents(n, StoreSchedule.getMonth, StoreSchedule.getYear, 'morning')">
+          <div class="sch-name">{{ event['name'] }}</div>
           <div>{{ event['message'] }}</div>
         </div>
+        
       </div>
     </div>
-
+    <div>{{ StoreSchedule.booking }}</div>
   </div>
 </template>
 
 <style scoped>
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300&family=Open+Sans:wght@300&display=swap');
+
+ .txt-time{
+  width: 100%;
+  text-align: center;
+  padding-top: 4px;
+  font-size: 25px;
+  height: calc(20% - 5px);
+  font-family: 'Nunito', sans-serif;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+}
+.sch-ev-cont{
+  width: calc(33.33% - 2px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+.sch-ev-wr > div:nth-child(2){
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.sch-ev-wr{
+  flex-direction: row;
+  align-items: center;
+  font-size: 30px;
+  justify-content: space-evenly;
+  font-family: 'Nunito', sans-serif;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  height: 80%;
+  width: 100%;
+}
+
+.sch-msg{
+  font-size: 18px;
+}
+.sch-name{
+  text-transform: capitalize;
+}
 
 .sch-wrap > div{
   height: 25vh;

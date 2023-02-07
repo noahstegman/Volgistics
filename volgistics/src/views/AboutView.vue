@@ -80,11 +80,11 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
       <div class="blank" v-for="n in StoreSchedule.getDay"></div>
       <div class="day" v-for="n in StoreSchedule.getTotalDays" @click="StoreSchedule.overlay(n, StoreSchedule.getMonth, StoreSchedule.getYear)">
         <div class="date">{{ n }}</div>
-        <div v-for="event in StoreSchedule.getEvents(n, StoreSchedule.getMonth, StoreSchedule.getYear, 'morning')">
-          <div class="sch-name">{{ event['name'] }}</div>
-          <div>{{ event['message'] }}</div>
+        <div class="color-wrap">
+          <div class="mcolor" v-bind:class="StoreSchedule.getEventTotal(n, StoreSchedule.getMonth, StoreSchedule.getYear, 'morning')"><div>Morning</div></div>
+          <div class="mcolor" v-bind:class="StoreSchedule.getEventTotal(n, StoreSchedule.getMonth, StoreSchedule.getYear, 'afternoon')"><div>Afternoon</div></div>
+          <div class="mcolor" v-bind:class="StoreSchedule.getEventTotal(n, StoreSchedule.getMonth, StoreSchedule.getYear, 'evening')"><div>Evening</div></div>
         </div>
-        
       </div>
     </div>
     <div>{{ StoreSchedule.booking }}</div>
@@ -95,16 +95,39 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300&family=Open+Sans:wght@300&display=swap');
 
+.zero{
+  background-color: rgba(255, 0, 0, 0.455);
+}
+
+.one{
+  background-color: rgba(255, 166, 0, 0.493);
+}
+
+.two{
+  background-color: rgba(246, 255, 0, 0.424);
+}
+
+.three{
+  background-color: rgba(0, 128, 0, 0.438);
+}
+
  .txt-time{
   width: 100%;
   text-align: center;
-  padding-top: 4px;
+  padding-top: 5px;
   font-size: 25px;
   height: calc(20% - 5px);
   font-family: 'Nunito', sans-serif;
   text-transform: uppercase;
   border-bottom: 1px solid black;
 }
+
+.mcolor{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .sch-ev-cont{
   width: calc(33.33% - 2px);
   display: flex;
@@ -151,6 +174,19 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
 .sch-night{
   background-color: mediumpurple;
 }
+.color-wrap{
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+  width: 100%;
+}
+.color-wrap > div{
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 1000;
+  height: 30%;
+}
+
 .sch-wrap{
   height: 70vh;
   width: 100%;
@@ -210,8 +246,8 @@ console.log(lol.getDate() + (7 - lol.getDay())) */
   padding: 1px;
   border-radius: 100px;
   width: 25px;
-  height: 25px;
-  font-size: 22px;
+  height: calc(10% - 4px);
+  font-size: 18px;
   font-family: 'Open Sans', sans-serif;
   text-align: center;
 }

@@ -58,6 +58,8 @@ export const createScheduleStore = defineStore({
                 let entry = {day: this.selectedDay, month: this.selectedMonth, year: this.selectedYear, name: this.name, message: this.message, id: this.id, timeslot: this.timeslot}
                 this.booking = [entry, ...this.booking]
                 this.id++
+                this.name = ""
+                this.message = ""
                 this.showInput = false
             }
         },
@@ -90,6 +92,37 @@ export const createScheduleStore = defineStore({
             let m = new Date(this.date)
             m.setMonth(m.getMonth() + 1)
             this.date = m.toISOString().split('T')[0]
+        },
+        getEventTotal(n, m, y, t){
+            let count = 0
+            this.booking.forEach(item => {
+                if(n !== item['day']){
+                    return
+                } 
+                if(m !== item['month']){
+                    return
+                }
+                if(t !== item['timeslot']){
+                    return
+                }
+                if(y !== item['year']){
+                    return
+                } else{
+                    count++
+                }
+            });
+            if(count == 0){
+                return "zero"
+            }
+            else if(count == 1){
+                return "one"
+            }
+            else if(count == 2){
+                return "two"
+            }
+            else {
+                return "three"
+            }
         }
     },
     getters: {
